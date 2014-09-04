@@ -79,9 +79,6 @@ class Account
     end
     return nil
   end
-
-
-
 end
 
 
@@ -116,7 +113,6 @@ class Results
     end
     @accounts
   end
-
 end
 
 Results.run
