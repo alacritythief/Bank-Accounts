@@ -54,7 +54,6 @@ class Transaction
 end
 
 
-
 class Account
   attr_reader :starting_balance, :summary, :transactions, :name
   attr_accessor :current_balance
