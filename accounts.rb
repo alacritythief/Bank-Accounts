@@ -1,16 +1,4 @@
-# As a business owner
-# I want to update my bank balances with transaction data
-# So that I can know the cash I have available
-
-# Acceptance Criteria:
-
-# * I can load a CSV that contains my starting balances for all of my accounts
-# * I can load a CSV that contains all of my bank transactions
-# * For each account, the system outputs my starting balance, ending balance, and
-#   transaction history for the account in chronological order.
-
 require 'csv'
-require 'pry'
 
 ACCOUNTS = 'balances.csv'
 TRANSACTIONS = 'bank_data.csv'
