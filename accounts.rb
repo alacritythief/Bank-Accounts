@@ -3,6 +3,7 @@ require 'csv'
 ACCOUNTS = 'balances.csv'
 TRANSACTIONS = 'bank_data.csv'
 
+
 class Import
   attr_reader :accounts, :transactions
 
@@ -45,7 +46,7 @@ class Transaction
   end
 
   def summary
-    puts "$#{currency(amount.abs)} \t#{self.deposit? ? 'WITHDRAWAL' : 'DEPOSIT'} \t #{date} - #{description}"
+    puts "$#{currency(amount.abs)} \t #{self.deposit? ? 'WITHDRAWAL' : 'DEPOSIT'}\t #{date} - #{description}"
   end
 
   def currency(money)
@@ -82,14 +83,14 @@ end
 
 
 class Results
-
   def self.run
     @accounts = self.build
 
     @accounts.each do |account|
       puts "\n===== #{account.name} ====="
-      puts "Starting Balance: $#{self.currency(account.starting_balance)}"
+      puts "\nStarting Balance: $#{self.currency(account.starting_balance)}"
       puts "Ending Balance: $#{self.currency(account.current_balance)}"
+      puts
       puts "#{account.summary}"
       puts "============================"
     end
