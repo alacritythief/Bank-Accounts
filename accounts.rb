@@ -98,8 +98,7 @@ class Bank
   def self.build(raw_accounts = Import.accounts, raw_transactions = Import.transactions)
     @accounts = []
     raw_accounts.each do |account|
-      account_pick = Account.new(account)
-      @accounts << account_pick
+      @accounts << account_pick = Account.new(account)
         raw_transactions.each do |transaction|
           if transaction[:account] == account_pick.name
             account_pick.transactions << Transaction.new(transaction)
