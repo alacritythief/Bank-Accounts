@@ -3,7 +3,6 @@ require 'csv'
 ACCOUNTS = 'balances.csv'
 TRANSACTIONS = 'bank_data.csv'
 
-
 class Import
   attr_reader :accounts, :transactions
 
@@ -12,7 +11,6 @@ class Import
     CSV.foreach(file, headers: true, header_converters: :symbol, converters: :numeric) do |row|
       accounts << row.to_hash
     end
-
     accounts
   end
 
@@ -21,7 +19,6 @@ class Import
     CSV.foreach(file, headers: true, header_converters: :symbol, converters: :numeric ) do |row|
       transactions << row.to_hash
     end
-
     transactions
   end
 end
@@ -39,31 +36,33 @@ class Transaction
 
   def deposit?
     if amount < 0
-      true
-    else
       false
+    else
+      true
     end
   end
 
   def summary
-    puts "$#{currency(amount.abs)} \t #{self.deposit? ? 'WITHDRAWAL' : 'DEPOSIT'}\t #{date} - #{description}"
-  end
-
-  def currency(money)
-    sprintf('%.2f', money)
+    print "$#{Bank.currency(amount.abs)}  \t"
+    if self.deposit? == true
+      print "DEPOSIT"
+    else
+      print 'WITHDRAWAL'
+    end
+    puts " \t #{date} - #{description}"
   end
 end
 
 
 class Account
-  attr_reader :starting_balance, :summary, :transactions, :name
-  attr_accessor :current_balance
+  attr_reader :starting_balance, :summary, :name
+  attr_accessor :transactions, :current_balance
 
   def initialize(account)
     @transactions = []
     @starting_balance = account[:balance].to_f
-    @name = account[:account]
     @current_balance = starting_balance
+    @name = account[:account]
   end
 
   def current_balance
@@ -82,22 +81,18 @@ class Account
 end
 
 
-class Results
-  def self.run
+class Bank
+  def self.results
     @accounts = self.build
 
     @accounts.each do |account|
-      puts "\n===== #{account.name} ====="
-      puts "\nStarting Balance: $#{self.currency(account.starting_balance)}"
-      puts "Ending Balance: $#{self.currency(account.current_balance)}"
+      puts "\n==== #{account.name} ======================================="
+      puts "\nStarting Balance: $#{Bank.currency(account.starting_balance)}"
+      puts "Ending Balance: $#{Bank.currency(account.current_balance)}"
       puts
       puts "#{account.summary}"
-      puts "============================"
+      puts "==============================================================="
     end
-  end
-
-  def self.currency(money)
-    sprintf('%.2f', money)
   end
 
   def self.build(raw_accounts = Import.accounts, raw_transactions = Import.transactions)
@@ -113,6 +108,10 @@ class Results
     end
     @accounts
   end
+
+  def self.currency(money)
+    sprintf('%.2f', money)
+  end
 end
 
-Results.run
+Bank.results
